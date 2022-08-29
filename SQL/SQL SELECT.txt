@@ -11,5 +11,3 @@
 3) SELECT Ename, Deptno
    FROM EMP
    WHERE Empno = 7788;
-   
-   
