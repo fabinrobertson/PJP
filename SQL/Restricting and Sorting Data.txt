@@ -1,0 +1,68 @@
+1)  SELECT Ename, Sal, Comm
+    FROM Emp 
+    WHERE Comm > 0
+    ORDER BY 2,3 DESC;
+    
+2)  SELECT DISTINCT job_code
+    FROM EMP;
+  
+  
+3)  SELECT empno AS Emp #, ename AS Employee, job_name AS Job, hire_date AS Hire Date
+    FROM EMP;
+
+
+4)  SELECT last_name +', '+ job_id AS Employee and Title
+    FROM EMP;
+    
+    
+5)  SELECT ENAME + ',' + JOB +',' + HIREDATE + ',' + MGR
+    AS THE_OUTPUT
+    FROM EMP;
+    
+    
+6)  SELECT ename, job, Hiredate
+    FROM EMP
+    WHERE ename = 'SCOTT' OR ename = 'TURNER'
+    ORDER BY Hiredate ASC;
+    
+    
+7)  SELECT ename, deptno
+    FROM EMP
+    WHERE deptno = 20 OR deptno = 30
+    ORDER BY ename ASC;
+    
+    
+8)  SELECT last_name AS Employee, salary AS Monthly Salary
+    FROM EMP
+    WHERE (salary BETWEEN 2000 AND 3000) AND (deptno = 20 OR deptno = 30)
+    ORDER BY ename ASC;
+    
+    
+9)  SELECT last_name, hire_date
+    FROM EMP
+    WHERE hire_date LIKE '%81';
+    
+    
+10)  
+
+
+11) SELECT last_name, job_title
+    FROM EMP
+    WHERE manager IS NULL;
+    
+    
+12) 
+13)
+14) SELECT last_name
+    FROM EMP
+    WHERE ename LIKE '__A%';
+    
+    
+15)SELECT last_name
+    FROM EMP
+    WHERE ename LIKE '%A%' AND ename LIKE '%S%';
+    
+    
+16) SELECT Ename, Job, Sal
+    FROM EMP
+    WHERE Job ='CLERK' AND Sal IS IN(800,950,1300);
