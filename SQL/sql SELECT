@@ -1,0 +1,15 @@
+1) DESC DEPT;
+   SELECT *
+   FROM DEPT;
+   
+   
+2) DESC EMP;
+   SELECT *
+   FROM EMP;
+   
+   
+3) SELECT Ename, Deptno
+   FROM EMP
+   WHERE Empno = 7788;
+   
+   
