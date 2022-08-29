@@ -1,0 +1,59 @@
+1)  SELECT SYSDATE AS "Date"
+    FROM DUAL;
+    
+2)  SELECT empno, last_name, salary, ABS((salary*115.5)/100) "New Salary"
+    FROM EMP;
+    
+3)  SELECT empno, last_name, salary, ABS((salary*115.5)/100) "New Salary",
+    (ABS((salary*115.5)/100)- salary) "Increase"
+    FROM EMP;
+    
+4)  SELECT ename, INITCAP(ename) AS "Formatted Name", LENGTH(ename) AS "Name Length"
+    FROM EMP
+    WHERE ename LIKE 'J%' OR ename LIKE 'A%' OR ename LIKE 'M%'
+    ORDER BY ename;
+    
+5)  SELECT ename, INITCAP(last_name) AS "Formatted Name", LENGTH(last_name) AS "Name Length"
+    FROM EMP
+    WHERE last_name LIKE '&name%'
+    ORDER BY last_name;
+    
+6)  SELECT Ename, ROUND(MONTHS_BETWEEN(SYSDATE, hire_date),0) AS "MONTHS_WORKED"
+    FROM EMP
+    ORDER BY 2;
+
+7)  SELECT ename||' earns $'||salary||' monthly but wants $'||salary*3 AS "Dream Salaries"
+    FROM EMP;
+
+8)  SELECT last_name, LPAD(salary,15,'$') AS "SALARY"
+    FROM EMP;
+    
+9)  SELECT last_name, hire_date,
+    TO_CHAR(NEXT_DAY(ADD_MONTHS(hire_date, 6), 'MONDAY'),'fmDay, " the " Ddspth " of " Month, YYYY') AS "REVIEW" 
+    FROM EMP;
+
+10) SELECT last_name, hire_date, TO_CHAR(hire_date,'DAY') AS "DAY"
+    FROM EMP
+    ORDER BY TO_CHAR(hire_date-1, 'd');
+    
+11) SELECT last_name, IF(comm > 0, comm, 'No Commission') AS "COMM"
+    FROM EMP;
+    
+12) SELECT (LEFT(last_name,8) + REPEAT('*', FLOOR(salary/1000))) AS "EMPLOYEES_AND_THEIR_SALARIES"
+    FROM EMP
+    ORDER BY salary DESC;
+    
+13) SELECT JOB_ID, 
+    DECODE(JOB_ID,'PRESIDENT','A','MANAGER', 'B', 'SALESMAN', 'C', 'CLERK', 'D', NULL  ) GRADE
+    FROM EMP;
+    
+14) SELECT JOB_ID,
+    CASE
+        WHEN 'PRESIDENT' THEN 'A'
+        WHEN 'MANAGER' THEN 'B'
+        WHEN 'SALESMAN' THEN 'C'
+        WHEN 'CLERK' THEN 'D'
+        ELSE NULL
+    END AS "GRADE"
+    FROM EMP;
+        
