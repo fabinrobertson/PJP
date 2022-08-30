@@ -1,0 +1,20 @@
+1)  SELECT DISTINCT job,SUM(CASE deptno WHEN 10 THEN salary END) "DEPT 10",
+                    SUM(CASE deptno WHEN 20 THEN salary END) "DEPT 20",
+                    SUM(CASE deptno WHEN 30 THEN salary END) "DEPT 30",
+                    SUM(salary) "Total Salary"
+    FROM employee
+    GROUP BY job
+    
+2)  SELECT dept.deptno, SUM(dept.salary) "Department salary",
+           job.job_name, SUM(job.salary) "Job Salary",
+           (SUM(dept.salary) + SUM(job.salary)) "Total Salary"
+    FROM dept, job
+    GROUP BY dept.deptno, job.job_name;
+ 
+3)  SELECT job, deptno
+    FROM employee
+    WHERE deptno in(10,20,30)
+    ORDER BY (CASE WHEN deptno = 20 THEN 1
+                  WHEN deptno = 10 THEN 2
+                  WHEN deptno = 30 THEN 3
+                  ELSE 4 END) ;
