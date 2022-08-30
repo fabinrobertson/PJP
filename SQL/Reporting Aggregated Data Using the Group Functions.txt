@@ -1,0 +1,34 @@
+1)  SELECT MAX(salary) "Max Salary", MIN(salary) "Min Salary", ROUND(AVG(salary)) "Average Salary"
+    FROM employee;
+    
+2)  Select ROUND(MAX(column_name)) "Max", ROUND(MIN(column_name)) "MIN",
+           ROUND(AVG(column_name)) "Average", ROUND(SUM(column_name)) "SUM"
+    FROM employee;
+    
+3)  SELECT job_type, MIN(salary) "Min Salary", MAX(salary) "Max Salary",
+           ROUND(SUM(column_name)) "SUM of Salary", ROUND(AVG(salary)) "Average Salary"
+    FROM employee
+    GROUP BY job_type;
+    
+4)  SELECT job_type, COUNT(*)
+    FROM employee
+    GROUP BY job_type;
+    
+5)  SELECT COUNT(manager_id) "Number Of Managers" 
+    FROM manager;
+    
+6)  SELECT MAX(salary) "Max Salary", MIN(salary) "Min Salary", 
+           ROUND(MAX(salary) - MIN(salary)) "DIFFERENCE"
+    FROM employee;
+    
+7)  SELECT manager_no, MIN(salary)
+    FROM employee
+    WHERE (manager_no IS NOT NULL) AND (salary > 2000)
+    GROUP BY manager_no
+    ORDER BY 2 DESC;
+    
+8) SELECT COUNT(*) "Total number of employees", COUNT(DECODE(TO_CHAR(hire_date,'YYYY'), '1980', empno)) "1980",
+          COUNT(DECODE(TO_CHAR(hire_date,'YYYY'), '1981', empno)) "1981",
+          COUNT(DECODE(TO_CHAR(hire_date,'YYYY'), '1982', empno)) "1982",
+          COUNT(DECODE(TO_CHAR(hire_date,'YYYY'), '1983', empno)) "1983"
+    FROM employee;
