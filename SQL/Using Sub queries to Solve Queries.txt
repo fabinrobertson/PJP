@@ -1,17 +1,104 @@
-1)
-2)
-3)
-4)
-5)
-6)
-7)
-8)
-9)
-10)
-11)
-12)
-13)
-14)
-15)
-16)
-17)
+1)  SELECT empno, ename, deptno
+    FROM employee
+    WHERE deptno = (SELECT deptno
+                    FROM employee
+                    WHERE ename = &ename);
+                   
+2)  SELECT *
+    FROM emoployee
+    WHERE salary > (SELECT AVG(salary)
+                    FROM employee);
+                   
+3)  SELECT ename, job
+    FROM employee
+    WHERE EXISTS (SELECT *
+                  FROM employee
+                  WHERE job = 'MANAGER');
+                  
+4)  SELECT empid, ename
+    FROM employee
+    WHERE salary < ALL (SELECT MIN(salary)
+                        FROM employee
+                        WHERE deptno = 10);
+                        
+5)  SELECT DISTINCT empid, ename
+    FROM employee
+    WHERE deptno = (SELECT deptno
+                    FROM employee
+                    WHERE ename = &name)
+    AND mgr = (SELECT mgr
+               FROM employee
+               WHERE ename = &name);
+               
+6)  SELECT empno, ename
+    FROM employee
+    WHERE deptno = (SELECT deptno
+                    FROM employee
+                    WHERE ename LIKE "%r%");
+                    
+7)  SELECT ename, deptno, job
+    FROM employee
+    WHERE deptno = (SELECT deptno
+                    FROM department
+                    WHERE loc = 'NEW YORK');
+                    
+8)  SELECT ename, deptno, job
+    FROM employee
+    WHERE deptno = (SELECT deptno
+                    FROM department
+                    WHERE loc = &location);
+                    
+9)  SELECT ename, salary
+    FROM employee
+    WHERE managerid = (SELECT empid
+                       FROM employee
+                       WHERE ename = 'King');
+                       
+10) SELECT empid, ename
+    FROM employee
+    WHERE deptno = (SELECT deptno
+                    FROM employee
+                    WHERE ename = 'JAMES');
+                    
+11) SELECT e.ename, e.salary, e.deptno
+    FROM employee e
+    WHERE salary < (SELECT AVG(emp.salary)
+                    FROM employee emp
+                    WHERE emp.deptno = e.deptno);
+                    
+12) SELECT d.loc, (SELECT AVG(e.salary)
+                   FROM employee e 
+                   WHERE e.deptno = d.deptno)
+    FROM department d
+    GROUP BY d.loc;
+
+13) SELECT salary
+    FROM (SELECT salary
+          FROM employee
+          ORDER BY salary ASC)
+    WHERE ROWNUM <= N;
+
+14) (SELECT *
+    FROM employee
+    ORDER BY empid DESC LIMIT N)
+    ORDER BY empid ASC;
+    
+15) SELECT ename
+    FROM employee e
+    WHERE deptno = (SELECT deptno
+                    FROM department
+                    WHERE loc = 'DALLAS')
+    ORDER BY 1 DESC;
+
+16) SELECT e.ename, e.salary, e.deptno
+    FROM employee e
+    WHERE salary < (SELECT AVG(emp.salary)
+                    FROM employee emp
+                    WHERE emp.deptno = e.deptno);
+                    
+17) WITH avgsal AS
+    (SELECT AVG(salary)
+     FROM dept)
+    SELECT loc
+    FROM dept, avgsal
+    WHERE SUM(dept.salary) < avgsal;
