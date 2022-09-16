@@ -1,1 +1,90 @@
+1)  CREATE TABLE dept1(
+    deptno INTEGER PRIMARY KEY,
+    dname VARCHAR2(30) NOT NULL,
+    loc VARCHAR2(30) NOT NULL);
 
+2)  CREATE TABLE emp1(
+    empno INTEGER PRIMARY KEY,
+    ename VARCHAR2(20) NOT NULL,
+    sal NUMBER(10,2) CHECK(sal > 5000),
+    mgr NUMBER REFERENCES emp(empno),
+    deptno INTEGER REFERENCES dept1(deptno));
+
+3)  CREATE TABLE dept11 AS 
+    SELECT *
+    FROM dept1;
+    CREATE TABLE emp11 AS
+    SELECT *
+    FROM emp1;
+    
+4)  ALTER TABLE emp1
+    ADD address VARCHAR2(30);
+    
+5)  ALTER TABLE emp1
+    RENAME COLUMN sal TO salary;
+    
+6)  ALTER TABLE emp1
+    RENAME COLUMN mgr TO MANAGER;
+    ALTER TABLE emp1
+    RENAME COLUMN deptno TO DEPTNO;
+    DESC emp1;
+
+7)  ALTER TABLE emp1
+    MODIFY ename VARCHAR2(40) NOT NULL;
+    
+8)  ALTER TABLE emp1
+    MODUFY ename VARCHAR2(40) NULL;
+    
+9)  COMMENT ON TABLE dept1 IS 'Depts of WIPRO';
+
+10) COMMENT ON COLUMN dept1.deptno IS 'Deptno of WIPRO';
+
+11) COMMENT ON TABLE emp1 IS 'Employees of WIPRO';
+
+12) COMMENT ON COLUMN emp1.empno IS 'Empno of WIPRO';
+
+13) COMMENT ON TABLE dept1 IS ' ';
+    COMMENT ON COLUMN dept1.deptno IS ' ';
+    COMMENT ON TABLE emp1 IS ' ';
+    COMMENT ON COLUMN emp1.empno IS ' ';
+    
+14) ALTER TABLE emp1 SET UNUSED(sal, ename);
+
+15) ALTER TABLE emp1 DROP UNUSED COLUMNS;
+
+16) DROP TABLE emp1;
+    DROP TABLE dept1;
+    
+17) CREATE TABLE emp1
+    AS (SELECT *
+        FROM emp);
+
+18) ALTER TABLE emp1 
+    RENAME TO EMP_Test;
+    
+19) TRUNCATE TABLE Emp_Test;
+    SELECT *
+    FROM Emp_Test;
+    
+20) CREATE TABLE Emp2
+    AS (SELECT Empno, Ename, sal
+        FROM Emp);
+        
+21) DROP TABLE Emp2;
+
+22) CREATE TABLE emp2
+    AS (SELECT *
+        FROM emp
+        WHERE 1=0);
+
+23) DROP TABLE Emp2;
+
+24) FLASHBACK TABLE Emp2 TO BEFORE DROP;
+    SELECT *
+    FROM Emp2;
+    
+25) FLASHBACK TABLE Emp2 TO BEFORE DROP;
+    ALTER TABLE Emp2
+    RENAME TO EMP2_1;
+
+26) DESC *;
