@@ -1,1 +1,115 @@
+1)  CREATE TABLE EmpTest
+    AS (SELECT *
+    FROM EMP);
+    
+2)  INSERT INTO EmpTest (Empno, Ename, Sal)
+    VALUES (100,USER,5000);
+    
+3)  UPDATE EmpTest
+    SET Sal = (sal*115)/100
+    WHERE Ename = 'TURNER';
+    
+4)  UPDATE EmpTest
+    SET Sal = (Select Sal
+               FROM EmpTest
+               WHERE Ename = 'Scott')
+    WHERE Ename = 'Smith';
+    
+5)  UPDATE EmpTest
+    SET Sal = (sal*110)/100
+    WHERE Empno = (SELECT Empno
+                   FROM dept
+                   WHERE loc = 'NEW YORK');
+                   
+6)  ALTER TABLE EmpTest
+    DROP COLUMN Comm;
+    
+7)  DELETE FROM EmpTest
+    WHERE empno = (SELECT empno
+                  FROM dept
+                  WHERE dname = 'SALES');
+    
+8)  DELETE FROM EmpTest
+    WHERE deptno = (SELECT deptno
+                   FROM dept
+                   WHERE ename = &name);
+                   
+9)  CREATE TABLE Emp2
+    AS (SELECT Empno, Ename, sal
+        FROM Emp
+        WHERE 1 = 0);
+        
+10) CREATE TABLE Emp3
+    AS (SELECT Empno, Job
+        FROM Emp
+        WHERE 1 = 0);
+        
+11) INSERT ALL
+    INTO Emp2 VALUES (SELECT * FROM Emp)
+    INTO Emp3 VALUES (SELECT * FROM Emp);
+    
+12) TRUNCATE TABLE Emp2;
+    INSER INTO Emp2 VALUES (7788, 'SMITH', 4500),
+    (7654, 'JACK', 3500);
+    
+13) COMMIT;
 
+14) MERGE INTO Emp2 p
+    USING Emp n
+    ON (p.Empno = m.Empno)
+    WHEN MATCHED THEN
+      UPDATE SET p.Ename =n.Ename,
+                 p.sal = n.sal
+    WHEN NOT MATCHED THEN
+      INSERT(Empno, Ename, sal)
+      VALUES(n.Empno, n.Ename, n.sal);
+      
+15) SELECT *
+    FROM Emp2;
+    
+16) ROLLBACK;
+
+17) MERGE INTO Emp2 p
+    USING Emp n
+    ON (p.Empno = 7780)
+    WHEN MATCHED THEN
+      UPDATE SET p.Ename =n.Ename, 
+                 p.sal = n.sal
+    WHEN NOT MATCHED AND (n.sal  > 3000 ) THEN
+      INSERT(Empno, Ename, sal)
+      VALUES(n.Empno, n.Ename, n.sal);
+      
+18) SELECT *
+    FROM Emp2;
+    
+19) GRANT CONNECT TO WIPRO IDENTIFIED BY password;
+
+20) GRANT ALL PRIVILEGES ON EMP FROM 'SCOTT' TO 'WIPRO';
+
+21) DELETE *
+    FROM EMP
+    WHERE deptno = 10;
+    
+22) DELETE * 
+    FROM SCOTT.EMP
+    WHERE deptno = 10;
+    
+23) system mysql -u 'SCOTT' -p
+    ROLLBACK;
+    system mysql -u 'WIPRO' -p
+    DESC *;
+    
+24) SELECT *
+    FROM EMP
+    WHERE Empno = 1
+    FOR UPDATE WAITFOR DELAY '00:00:20';
+    
+25) system mysql -u 'WIPRO' -p
+    ROLLBACK;
+    system mysql -u 'SCOTT' -p
+    DESC *;
+    
+26) system mysql -u 'WIPRO' -p
+    ROLLBACK;
+    system mysql -u 'SCOTT' -p
+    ROLLBACK;
