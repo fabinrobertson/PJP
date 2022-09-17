@@ -1,0 +1,12 @@
+1)
+SET serveroutput ON
+DECLARE 
+    vemployee    EMP%ROWTYPE;
+    vempno       NUMBER(6);
+BEGIN
+  vempno := &empno;
+  SELECT * INTO vemployee 
+  FROM EMP
+  WHERE EMPNO = vempno;
+  dbms_output.put_line(vemployee.EMPNO, vemployee.ENAME, vemployee.SAL);
+END;
