@@ -1,0 +1,9 @@
+1)  SET serveroutput ON;
+    DECLARE
+      netsal    EMP.Sal%TYPE;
+    BEGIN
+      SELECT (Sal + nvl(comm,0)) INTO netsal
+      FROM EMP
+      WHERE empno = &empno;
+      dbms_output.put_line('Netsal = '|| netsal);
+    END;
