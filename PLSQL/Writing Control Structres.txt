@@ -1,0 +1,81 @@
+1)  SET serveroutput ON;
+    DECLARE
+      empno1  EMP.EMPNO%TYPE;
+      ename1  EMP.ENAME.%TYPE;
+      sal1    EMP.SAL%TYPE;
+      num     EMP.EMPNO%TYPE;
+    BEGIN
+      empno1 := &empno;
+      ename1 := &ename;
+      sal1 := &sal;
+      SELECT EMPNO INTO num
+      FROM EMP
+      WHERE EMPNO = empno1;
+      IF num IS NOT NULL THEN
+        UPDATE EMP SET ENAME = ename1, SAL = sal1
+        WHERE EMPNO = empno1;
+        dbms_output.put_line('values updated');
+      END IF;
+      EXCEPTION 
+      WHEN no_data_found THEN
+        INSERT INTO EMP (ENAME, EMPNO, SAL)
+        VALUES (ename1, empno1, sal);
+        dbms_output.put_line('values inserted');
+  END;
+  
+2)
+SET serveroutput ON;
+DECLARE 
+  num   NUMBER;
+BEGIN
+  num := &num;
+  IF MOD(num,2) = 0 THEN
+    dbms_output.put_line(num||' is even');
+  ELSE
+    dbms_output.put_line(num||' is odd');
+  END IF;
+END;
+
+3)
+SET serveroutput ON
+DECLARE
+  vdeptno NUMBER;
+  vsal    NUMBER;
+  vcomm   NUMBER;
+  vempno  NUMBER;
+BEGIN
+  vempno := &empno;
+  SELECT DEPTNO, SAL, COMM INTO vdeptno, vsal, vcomm
+  FROM EMP
+  WHERE EMPNO = vempno;
+  IF vdeptno = 10 THEN
+    vsal := vsal + vsal * 10/100;
+    UPDATE EMP SET SAL = vsal WHERE EMPNO = vempno;
+  ELSEIF vdeptno = 20 THEN
+    vsal := vsal * 15/100;
+    UPDATE EMP SET SAL = vsal WHERE EMPNO = vempno;
+  ELSE
+    IF vcomm IS NULL THEN
+      UPDATE EMP SET SAL = vsal WHERE EMPNO = vempno;
+    ELSE
+      vsal := vsal + vcomm;
+      UPDATE EMP SET SAL = vsal WHERE EMPNO = vempno;
+    END IF;
+  END IF;
+END;
+
+4)
+CREATE TABLE MYTABLE1(
+    RESULT NUMBER(10) );
+SET serveroutput ON;
+DECLARE
+  i     NUMBER(2);
+BEGIN
+  FOR i IN 1 .. 10 LOOP
+    IF i!=6 AND i!=8 THEN
+      INSERT INTO MYTABLE1 (RESULT) VALUES (i);
+    END IF;
+  END LOOP;
+END;
+/
+SELECT * FROM MYTABLE1;
