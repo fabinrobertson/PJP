@@ -1,1 +1,99 @@
+1)
+  SET serveroutput ON;
+  DECLARE
+    ROWS_AFFECTED   NUMBER(5);
+    JOB1    VARCHAR2(20);
+  BEGIN
+    JOB1 := '&JOB';
+    DELETE FROM EMP WHERE JOB=JOB1;
+    ROWS_AFFECTED := SQL%ROWCOUNT;
+    IF ROWS_AFFECTED > 0 THEN
+    DBMS_OUTPUT.PUT_LINE(ROWS_AFFECTED ||' RECORDS ARE MODIFIED SUCCESSFULLY');
+    ELSE
+    DBMS_OUTPUT.PUT_LINE('NO RECORDS FOUND');
+  END IF;
+  END;
 
+2)
+  SET serveroutput ON;
+  ROLLBACK;
+
+3)
+SET serveroutput ON;
+DECLARE
+  n   NUMBER(5);
+  vename    EMP.ename%TYPE;
+  vsalary   EMP.salary%TYPE;
+  CURSOR c1 IS 
+  SELECT ename, salary FROM EMP ORDER BY salary DESC;
+BEGIN
+  n := &number;
+  OPEN c1;
+  LOOP
+  FETCH c1 INTO vename, vsalary;
+  EXIT WHEN c1%ROWCOUNT > n;
+  dbms_output.put_line(vename||" "||vsalary)
+  END LOOP;
+  CLOSE c1;
+END;
+
+4)
+SET serveroutput ON;
+DECLARE
+  vename    EMP.ename%TYPE;
+  vsalary   EMP.salary%TYPE;
+  CURSOR c1 IS 
+  SELECT ename, salary FROM EMP WHERE salary >(SELECT AVG(salary) FROM EMP);
+BEGIN
+  OPEN c1;
+  LOOP
+  FETCH c1 INTO vename, vsalary ;
+  EXIT WHEN c1%NOTFOUND;
+  dbms_output.put_line(vename||" "||vsalary);
+  END LOOP;
+  CLOSE c1;
+END;
+
+5)
+SET serveroutput ON;
+DECLARE
+  vename    EMP.ename%TYPE;
+  vsalary   EMP.vsalary%TYPE;
+  vhiredate EMP.hiredate%TYPE;
+  CURSOR c1 IS
+  SELECT ename, salary, hiredate FROM EMP WHERE (salary > 2000) AND (hiredate > '1981-6-15');
+BEGIN
+  OPEN c1;
+  LOOP
+  FETCH c1 INTO vename, vsalary, vhiredate;
+  EXIT WHEN c1%NOTFOUND;
+  dbms_output.put_line(vename||" earns "||vsalary||" and joined the organization on "||vhiresate);
+  END LOOP;
+  CLOSE c1;
+END;
+
+6)
+SET serveroutput ON;
+DECLARE
+  vename    EMP.ename%TYPE;
+  vhiredate EMP.hiredate%TYPE;
+  CURSOR c1 IS
+  SELECT ename, hiredate FROM EMP ORDER BY 
+  
+  
+7)
+SET serveroutput ON
+DECLARE
+  vename    EMP.ename%TYPE;
+  vcomm     EMP.vcomm%TYPE; 
+  CURSOR c1 IS
+  SELECT ename, nvl(comm,"No Commision") AS COMM FROM EMP;
+BEGIN
+  OPEN c1;
+  LOOP
+  FETCH c1 INTO vename, vcomm;
+  EXIT WHEN c1%NOTFOUND;
+  dbms_output.put_line(vename||" "||vcomm);
+  END LOOP;
+  CLOSE c1;
+END;
