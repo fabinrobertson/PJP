@@ -1,0 +1,97 @@
+1)--creating emp_details table
+  CREATE TABLE emp_details(
+  empno INTEGER CONSTRAINT empdetails_empno_pk PRIMARY KEY,
+  first_name VARCHAR2(30) NOT NULL,
+  last_name VARCHAR2(30) NOT NULL,
+  lodge_name VARCHAR2(30) CONSTRAINT empdetails_lodgename_fk REFERENCES lodge_details(lodeg_name));
+  
+  --creating emp_skill table
+  CREATE TABLE emp_skill(
+  empno INTEGER CONSTRAINT empskill_empno_fk REFERENCES emp_details(empno),
+  skill VARCHAR2(30) CONSTRAINT empskill_skill_fk REFERENCES skill_details(skill),
+  grade NUMBER(10),
+  PRIMARY KEY(empno,skill));
+  
+  --creating skill_details table
+  CREATE TABLE skill_details(
+  skill VARCHAR2(30) CONSTRAINT skill_details_skill_pk PRIMARY KEY,
+  skill_desc VARCHAR2(30));
+  
+  --creating lodge_details table
+  CREATE TABLE lodge_details(
+  lodge_name VARCHAR2(30) CONSTRAINT lodgedetails_lodgename_pk PRIMARY KEY,
+  lodge_manager VARCHAR2(30) NOT NULL ,
+  lodge_address VARCHAR2(30));
+  
+2)
+  --inserting values into lodge_details table
+  INSERT INTO lodge_details values('Jessy Lodge','Rajan','Rakesh Nagar');
+  INSERT INTO lodge_details values('Rajesh Lodge','Rajani','Anna Nagar');
+  INSERT INTO lodge_details values('Gooday Lodge','John','Sea Road');
+  SELECT * FROM lodge_details;
+  
+  --inserting values into lodge_details table
+  INSERT INTO emp_details values(101,'James','Jackson','Rajesh Lodge');
+  INSERT INTO emp_details values(102,'Kalpash','Raj','Gooday Lodge');
+  INSERT INTO emp_details values(103,'Jasmine','Joy','Jessy Lodge');
+  SELECT * FROM emp_details;
+  
+  --inserting values into lodge_details table
+  INSERT INTO skill_details values('Oracle SQL','Oracle Corporation');
+  INSERT INTO skill_details values('Dot Net','Microsoft');
+  INSERT INTO skill_details values('Sybase','SAP Corporation');
+  SELECT * FROM skill_details;
+  
+  --inserting values into lodge_details table
+  INSERT INTO emp_skill values(101,'Oracle SQL',9);
+  INSERT INTO emp_skill values(101,'Sybase',8);
+  INSERT INTO emp_skill values(102,'Dot Net',9);
+  INSERT INTO emp_skill values(103,'Oracle SQL',8);
+  SELECT * FROM emp_skill;
+
+3)
+  SELECT * FROM emp_details;
+  UPDATE emp_details SET lodge_name = 'Gooday lodge' WHERE empno = 101;
+  SELECT * FROM emp_details;
+  
+  -- adding cascade delete to foreign keys
+  ALTER TABLE emp_details DROP CONSTRAINT empdetails_lodgename_fk;
+  ALTER TABLE emp_details 
+  MODIFY lodge_name VARHAR2(30) CONSTRAINT empdetails_lodgename_fk REFERENCES 
+  lodge_details (lodge_name) ON DELETE CASCADE;
+
+  ALTER TABLE emp_skill DROP CONSTRAINT empskill_empno_fk;
+  ALTER TABLE emp_skill 
+  MODIFY empno INTEGER CONSTRAINT empskill_empno_fk REFERENCES 
+  emp_details (empno) ON DELETE CASCADE;
+
+4)
+  DELETE FROM emp_details WHERE empno=103;
+  SELECT * FROM emp_details;
+  SELECT * FROM emp_skill;
+  
+5)
+  a) SELECT empno,first_name||' '||last_name AS employee 
+     FROM emp_details JOIN emp_skill USING(empno) WHERE skill = 'Sybase';
+
+  b) SELECT n.first_name,s.skill,l.lodge_manager FROM lodge_details l
+     JOIN emp_details n USING(lodge_name) JOIN emp_skill s USING(empno);
+
+  c) SELECT skill FROM emp_skill WHERE empno=101;
+
+  d) SELECT d.first_name FROM emp_details d JOIN emp_skill s 
+     USING(empno) WHERE s.skill='Oracle SQL';
+   
+6)
+  CREATE OR REPLACE emp_view 
+  AS SELECT d.empno,d.first_name,s.skill,l.lodge_manager 
+  FROM emp_skill s join emp_details d ON(s.empno = d.empno)
+  JOIN lodge_details l USING(lodge_name);
+  SELECT * FROM emp_view;  
+  
+7)
+  CREATE OR REPLACE synonym empv FOR emp_view;
+  SELECT * FROM empv;
+  
+8)
+  CREATE INDEX id_empskill_skill ON emp_skill(skill);
