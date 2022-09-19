@@ -97,3 +97,23 @@ BEGIN
   END LOOP;
   CLOSE c1;
 END;
+
+8)
+SET serveroutput ON;
+DECLARE
+  vdeptno   EMP.deptno%TYPE;
+  vsal      EMP.salary%TYPE;
+  vastrsk   VARCHAR2(50);
+  CURSOR C1 AS 
+  SELECT deptno, star, salary FROM EMP;
+BEGIN
+vdeptno := &deptno
+OPEN c1;
+FETCH c1 INTO 
+SELECT nvl(ROUND(salary/1000),0) INTO vsal
+FROM EMP
+WHERE deptno = vdeptno;
+FOR i in 1..vsal LOOP
+  vastrsk = vastrsk||'*';
+END LOOP;
+FOR 
