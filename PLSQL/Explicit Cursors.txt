@@ -86,7 +86,7 @@ SET serveroutput ON
 DECLARE
   vename    EMP.ename%TYPE;
   vcomm     EMP.vcomm%TYPE; 
-  CURSOR c1 IS
+  CURSOR c1IS
   SELECT ename, nvl(comm,"No Commision") AS COMM FROM EMP;
 BEGIN
   OPEN c1;
@@ -104,16 +104,73 @@ DECLARE
   vdeptno   EMP.deptno%TYPE;
   vsal      EMP.salary%TYPE;
   vastrsk   VARCHAR2(50);
-  CURSOR C1 AS 
-  SELECT deptno, star, salary FROM EMP;
+  num       NUMBER(5)
+  CURSOR C1(pdeptno NUMBER) IS 
+  SELECT star, salary FROM EMP WHERE deptno = pdeptno;
 BEGIN
-vdeptno := &deptno
-OPEN c1;
-FETCH c1 INTO 
-SELECT nvl(ROUND(salary/1000),0) INTO vsal
-FROM EMP
-WHERE deptno = vdeptno;
-FOR i in 1..vsal LOOP
-  vastrsk = vastrsk||'*';
-END LOOP;
-FOR 
+  OPEN c1(deptno);
+  LOOP
+  FETCH c1 INTO vstar, vsal
+  EXIT WHEN c1%NOTFOUND;
+  n:=ROUND(vsal/1000)
+  FOR i IN 1..n
+    LOOP
+    v_astrsk:=v_astrsk||'*';
+    END LOOP;
+  UPDATE EMP
+  SET star = vastrsk
+  WHERE CURRENT OF c1;
+  END LOOP;
+END;
+
+9)
+SET serveroutput ON;
+DECLARE
+  r1  EMP%ROWTYPE;
+  CURSOR c1(pjob VARCHAR2(30), psalary NUMBER) IS
+  SELECT * FROM EMP WHERE job = pjob AND salary = psalary; 
+BEGIN
+  OPEN c1('CLERK',1000)
+  LOOP
+  FETCH c1 INTO r1
+  EXIT WHEN c1%NOTFOUND;
+    UPDATE EMP
+    SET job = 'SR CLERK', salary = (salary*110)/100
+    WHERE CURRENT OF c1;
+  END LOOP;
+END;
+
+10)
+SET serveroutput ON;
+DECLARE
+r1  EMP%ROWTYPE;
+CURSOR c1(pdeptno NUMBER) IS
+SELECT * FROM EMP WHERE deptno = pdeptno;
+BEGIN
+  OPEN c1(deptno);
+  LOOP
+  FETCH c1 INTO r1
+  EXIT WHEN c1%NOTFOUND;
+    IF r1.deptno == 10 THEN
+      UPDATE EMP SET salary = (salary*110)/100 WHERE CURRENT OF c1;
+    ELSEIF r1.deptno == 20 THEN
+      UPDATE EMP SET salary = (salary*115)/100 WHERE CURRENT OF c1;
+    ELSE
+      UPDATE EMP SET salary = (salary*105)/100 WHERE CURRENT OF c1;
+    END IF;
+END;
+
+11)
+SET serveroutput ON
+DECLARE
+  choice  NUMBER;
+BEGIN
+  choice := &choice;
+  IF choice == 1 THEN
+    SELECT * FROM EMP
+    WHERE salary > 2000;
+  ELSE
+    SELECT * FROM EMP
+    WHERE salary < 2000;
+  END IF;
+END;
