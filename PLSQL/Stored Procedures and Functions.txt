@@ -1,0 +1,45 @@
+1)
+SET serveroutput ON;
+
+CREATE OR REPLACE PROCEDURE displayemp
+(pempno IN NUMBER)
+IS
+  vename    VARCHAR2(30);
+  vsal      NUMBER(5);
+  vdeptno   NUMBER(5);
+BEGIN
+  SELECT ename, sal, deptno INTO vename, vsal, vdeptno 
+  FROM EMP WHERE empno =  pempno;
+  dbms_output.put_line(vename, vsal, deptno);
+END;
+/
+BEGIN
+  displayemp(empno);
+END;
+/
+
+2)
+SET serveroutput ON;
+CREATE OR REPLACE FUNCTION Add_num(num1 INTEGER,
+                                   num2 INTEGER)
+RETURN INTEGER
+IS 
+sum INTEGER := 0;
+BEGIN
+  sum = num1 + num2;
+  RETURN sum;
+END;
+/
+DECLARE
+  num1  INTEGER;
+  num2  INTEGER;
+BEGIN
+  num1 := &num1;
+  num2 := &num2;
+  dbms_output.put_line("sum = "||Add_num(num1, num2));
+END;
+
+3)
+SELECT * 
+  FROM DatabaseName.INFORMATION_SCHEMA.ROUTINES
+ WHERE ROUTINE_TYPE = 'PROCEDURE'
