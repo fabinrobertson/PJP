@@ -1,0 +1,85 @@
+1)
+CREATE TABLE MESSAGES (
+              result VARCHAR2(1000));
+
+SET serveroutput ON;
+DECLARE
+  sal NUMBER;
+BEGIN
+  sal := &salary;
+  SELECT ename FROM EMP WHERE salary = sal;
+  INSERT INTO MESSAGES(result)
+  VALUES(ename||' '||sal);
+  EXCEPTION
+    WHEN  TOO_MANY_ROWS THEN
+      dbms_output.put_line("More than one employee with that salary");
+    WHEN NO_DATA_FOUND THEN
+      dbms_output.put_line("No employee with that salary");
+    WHEN others THEN
+      dbms_output.put_line("ERROR");
+END;
+
+2)
+SET serveroutput ON;
+DECLARE
+  vempno    EMP.empno%ROWTYPE;
+  vename    EMP.ename%ROWTYPE;
+  vsal      EMP.sal%ROWTYPE;
+BEGIN
+  vempno := &empno;
+  vename := &ename;
+  vsal := &salary;
+  INSERT INTO EMP(empno, ename, sal)
+    VALUES(vempno, vename, vsal);
+  EXCEPTION
+    WHEN others THEN
+    dbms_output.put_line("ERROR");
+END;
+
+3)
+SET serveroutput ON;
+DECLARE
+  vempno    NUMBER;
+BEGIN
+  vempno := &empno;
+  DELETE FROM EMP WHERE empno = vempno;
+  EXCEPTION
+    WHEN others THEN
+    dbms_output.put_line("ERROR"); 
+END;
+
+4)
+CREATE TABLE stock (
+  pno NUMBEER(5),
+  pname VARCHAR2(30),
+  rate NUMBER(5),
+  tr_ qty NUMBER(5),
+  tr_type VARCHAR2(30));
+
+INSERT INTO stock VALUES(100, Joe, 5, 1000, R);
+INSERT INTO stock VALUES(110, John, 6, 2000, I);
+INSERT INTO stock VALUES(120, Josh, 7, 3000, R);
+
+SET serveroutput ON;
+DECLARE
+    r1              stock%ROWTYPE;
+    CURSOR c1(new_tr_qty NUMBER(5)) IS 
+      SELECT * FROM stock;
+    wrong_tr_type   EXCEPTION;
+BEGIN
+    OPEN c1(new_tr_qty);
+    FETCH c1 INTO r1
+    EXIT WHEN c1%NOTFOUND;
+    LOOP
+      IF r1.tr_type == 'R' THEN
+        UPDATE stock SET r1.tr_qty = r1.tr_qty + new_tr_qty WHERE CURRENT OF c1;
+      ELSEIF r1.tr_type == 'I' THEN
+        UPDATE stock SET r1.tr_qty = r1.tr_qty - new_tr_qty WHERE CURRENT OF c1;
+      ELSE
+        RAISE wrong_tr_type;
+      END IF;
+    END LOOP;
+    EXCEPTION
+    WHEN wrong_tr_type THEN
+      dbms_output.put_line(" Wrong TR_TYPE");
+END;
